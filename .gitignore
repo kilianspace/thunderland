@@ -66,3 +66,8 @@ crashlytics-build.properties
 # Me added by myself 20240916:)
 .DS_Store
 *.psd
+
+
+
+# Project Documents
+ProjectDocuments/
