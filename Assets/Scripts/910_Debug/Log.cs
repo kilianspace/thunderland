@@ -17,4 +17,5 @@ public class Log
     {
         Debug.LogError(message);
     }
+    
 }
