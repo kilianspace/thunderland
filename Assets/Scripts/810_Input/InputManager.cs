@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class InputManager : IManager
+public class InputManager : MonoBehaviour,IManager
 {
 
 }

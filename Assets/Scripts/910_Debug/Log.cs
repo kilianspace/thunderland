@@ -3,6 +3,11 @@ using UnityEngine;
 public class Log
 {
 
+
+    public static void Object(object obj)
+    {
+        Debug.Log(obj);
+    }
     public static void Info(string message)
     {
         Debug.Log(message);
@@ -17,4 +22,5 @@ public class Log
     {
         Debug.LogError(message);
     }
+    
 }

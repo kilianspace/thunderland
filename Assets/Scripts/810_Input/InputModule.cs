@@ -1,18 +1,34 @@
+using UnityEngine;
 
 public class InputModule : BaseModule<InputPayload>
 {
 
-  // Pass over "manager" using Constructor
-  public InputModule(IManager manager) : base(manager){}
+  // Inspector fields to observe
+  [SerializeField]
+  private InputCommunicator _inputCommunicator;
+  [SerializeField]
+  private IManager _managerInspectorView;
 
- private InputCommunicator _inputCommunicator;
+  // Pass over "manager" using Constructor of BaseModule
+  public InputModule(IManager manager) : base(manager){
+  }
 
 
   protected void Awake()
   {
+    // Write here when you need something to be initialized
     _inputCommunicator = new InputCommunicator();
+    // BaseModule Property
     Communicator = _inputCommunicator;
-      // Write here when you need something to be initialized
+
+   // BaseModule の _manager を設定
+    _managerInspectorView = _manager;
+    // InputManager を子オブジェクトとして追加
+    if (_managerInspectorView == null)
+    {
+        _managerInspectorView = gameObject.AddComponent<InputManager>();
+    }
+
   }
 
   protected override ICommunicator<InputPayload> CreateCommunicator()
@@ -24,5 +40,12 @@ public class InputModule : BaseModule<InputPayload>
  {
      _inputCommunicator.Transmit(inputPayload);
  }
+
+   // Debugging purposes: update inspector fields on every frame if needed
+  private void Update()
+  {
+      // Make sure the inspector fields always show the latest values
+      _managerInspectorView = _manager;
+  }
 
 }

@@ -23,4 +23,6 @@ public class CoreManager : MonoBehaviour
     DontDestroyOnLoad(this.gameObject);
 
   }
+
+
 }
