@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputModule : BaseModule<InputPayload>
 {
@@ -14,22 +15,62 @@ public class InputModule : BaseModule<InputPayload>
   }
 
 
-  protected void Awake()
+  protected override void Awake()
   {
+
+    // ++++++++++++++++++++++++ //
+    Log.Info("InputModule/ Awake()", 1);
+    // ++++++++++++++++++++++++ //
+
+    // 1
+    InitializeCommunicator();
+    // 2
+    SetupManager();
+    // 3
+    base.Awake();
+
+  }
+
+
+  // Setup Manager
+  ///////////////////////////////
+  private void SetupManager(){
+
+    // ++++++++++++++++++++++++ //
+    Log.Class(this);
+    // ++++++++++++++++++++++++ //
+
+    // Setup _manager of BaseModule
+     _managerInspectorView = _manager;
+     // Add InputManager as a component
+     if (_managerInspectorView == null)
+     {
+         _managerInspectorView = gameObject.AddComponent<InputManager>();
+     }
+  }
+  ///////////////////////////////
+
+
+
+  // Initialize InputCommunicator
+  ///////////////////////////////
+  private void InitializeCommunicator(){
+
+    Log.Info("InputModule/ InitializeCommunicator()", 1);
+
     // Write here when you need something to be initialized
     _inputCommunicator = new InputCommunicator();
+    InputModel inputModel = new InputModel();
+    InputPayload payload = new InputPayload(inputModel);
+    _inputCommunicator.Payload = payload;
+
     // BaseModule Property
     Communicator = _inputCommunicator;
 
-   // BaseModule の _manager を設定
-    _managerInspectorView = _manager;
-    // InputManager を子オブジェクトとして追加
-    if (_managerInspectorView == null)
-    {
-        _managerInspectorView = gameObject.AddComponent<InputManager>();
-    }
-
   }
+  ///////////////////////////////
+
+
 
   protected override ICommunicator<InputPayload> CreateCommunicator()
   {

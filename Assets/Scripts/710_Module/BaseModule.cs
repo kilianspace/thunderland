@@ -26,6 +26,7 @@ public abstract class BaseModule<T> : MonoBehaviour, IModule<T>
     protected virtual void Awake()
      {
          Communicator = CreateCommunicator();
+         Log.Info("BaseModule<T> / Awake()");
      }
 
     public IManager GetManager()
