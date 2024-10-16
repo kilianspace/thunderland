@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[System.Serializable]
 public class InputModule : BaseModule<InputPayload>
 {
 
@@ -10,10 +11,6 @@ public class InputModule : BaseModule<InputPayload>
   [SerializeField]
   private IManager _managerInspectorView;
 
-  // Pass over "manager" using Constructor of BaseModule
-  public InputModule(IManager manager) : base(manager){
-  }
-
 
   protected override void Awake()
   {
@@ -22,12 +19,8 @@ public class InputModule : BaseModule<InputPayload>
     Log.Info("InputModule/ Awake()", 1);
     // ++++++++++++++++++++++++ //
 
-    // 1
-    InitializeCommunicator();
-    // 2
-    SetupManager();
-    // 3
     base.Awake();
+    SetupManager();
 
   }
 
@@ -45,48 +38,36 @@ public class InputModule : BaseModule<InputPayload>
      // Add InputManager as a component
      if (_managerInspectorView == null)
      {
-         _managerInspectorView = gameObject.AddComponent<InputManager>();
+         GameObject childObject = new GameObject("InputManager");
+         childObject.transform.parent = this.transform;
+         if (childObject.GetComponent<InputManager>() == null)
+         {
+             childObject.AddComponent<InputManager>();
+         }
      }
   }
   ///////////////////////////////
 
 
 
-  // Initialize InputCommunicator
-  ///////////////////////////////
-  private void InitializeCommunicator(){
-
-    Log.Info("InputModule/ InitializeCommunicator()", 1);
-
-    // Write here when you need something to be initialized
-    _inputCommunicator = new InputCommunicator();
-    InputModel inputModel = new InputModel();
-    InputPayload payload = new InputPayload(inputModel);
-    _inputCommunicator.Payload = payload;
-
-    // BaseModule Property
-    Communicator = _inputCommunicator;
-
-  }
-  ///////////////////////////////
-
-
-
+  // Implement CreateCommunicator method
   protected override ICommunicator<InputPayload> CreateCommunicator()
   {
-      return new InputCommunicator();
+      Log.Info("InputModule / CreateCommunicator()", 1);
+
+      _inputCommunicator = new InputCommunicator();
+      InputModel inputModel = new InputModel();
+      InputPayload payload = new InputPayload(inputModel);
+      _inputCommunicator.Payload = payload;
+
+      return _inputCommunicator;
   }
 
-  public void ProcessInput(InputPayload inputPayload)
- {
-     _inputCommunicator.Transmit(inputPayload);
- }
-
-   // Debugging purposes: update inspector fields on every frame if needed
-  private void Update()
+  // Optional: Use SetManager to assign manager after instantiation
+  public void AssignManager(IManager manager)
   {
-      // Make sure the inspector fields always show the latest values
-      _managerInspectorView = _manager;
+      SetManager(manager); // Use the method from BaseModule
   }
+
 
 }

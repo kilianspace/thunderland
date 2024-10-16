@@ -2,37 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public abstract class BaseModule<T> : MonoBehaviour, IModule<T>
 {
-
     [SerializeField]
     protected IManager _manager;
 
-    //Implementation
+    // Implementation
     public ICommunicator<T> Communicator { get; set; }
     public IManager Manager => _manager;
 
-    protected BaseModule(IManager  manager)
+    // Awake for initialization
+    protected virtual void Awake()
     {
-      _manager = manager;
-      Log.Object(manager);
-      Log.Info("BaseModule Constructor");
+        Communicator = CreateCommunicator();
+        Log.Info("BaseModule<T> / Awake()");
     }
 
-    // Neeeds to be implemented in the child classes
+    // Needs to be implemented in the child classes
     protected abstract ICommunicator<T> CreateCommunicator();
-
-    protected virtual void Awake()
-     {
-         Communicator = CreateCommunicator();
-         Log.Info("BaseModule<T> / Awake()");
-     }
 
     public IManager GetManager()
     {
-      return _manager;
+        return _manager;
     }
 
-
+    // Public method to set the manager after instantiation
+    public void SetManager(IManager manager)
+    {
+        _manager = manager;
+    }
 }
