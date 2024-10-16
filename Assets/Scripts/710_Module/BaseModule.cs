@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class BaseModule<T> : MonoBehaviour, IModule<T>
 {
+
+    [SerializeField]
     protected IManager _manager;
 
     //Implementation
@@ -14,6 +16,8 @@ public abstract class BaseModule<T> : MonoBehaviour, IModule<T>
     protected BaseModule(IManager  manager)
     {
       _manager = manager;
+      Log.Object(manager);
+      Log.Info("BaseModule Constructor");
     }
 
     // Neeeds to be implemented in the child classes
@@ -22,6 +26,7 @@ public abstract class BaseModule<T> : MonoBehaviour, IModule<T>
     protected virtual void Awake()
      {
          Communicator = CreateCommunicator();
+         Log.Info("BaseModule<T> / Awake()");
      }
 
     public IManager GetManager()

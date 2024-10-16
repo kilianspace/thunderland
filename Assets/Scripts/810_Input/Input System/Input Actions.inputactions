@@ -2,7 +2,7 @@
     "name": "Input Actions",
     "maps": [
         {
-            "name": "Vertical Select",
+            "name": "VERTICAL_SELECTION",
             "id": "1568983e-fdac-4028-af44-81b859c89f1b",
             "actions": [
                 {
