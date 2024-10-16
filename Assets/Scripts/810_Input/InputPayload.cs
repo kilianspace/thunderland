@@ -19,9 +19,9 @@ public class InputPayload{
       Log.Info("InputPayload / InputPayload Constructor", 1);
       _inputModel = inputModel;
 
-      InputActions inputActions = new InputActions();
+      PlayerInput _playerInput = new PlayerInput();
       bool please = true;
-      inputActions.Enable();
+      _playerInput.Enable();
   }
 
 }

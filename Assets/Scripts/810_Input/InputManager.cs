@@ -12,7 +12,7 @@ public interface IInputManager : IManager
   // Active status property
   bool IsActive { get; set; }
   // Input System ActionMap Instance
-  InputActions InputActions { get; set; }
+//  PlayerInput _playerInput { get; set; }
 
 }
 public class InputManager : MonoBehaviour, IInputManager
@@ -42,11 +42,11 @@ public class InputManager : MonoBehaviour, IInputManager
    }
 
    // Input System
-   private InputActions _inputActions;
-   public InputActions InputActions
+   private PlayerInput _playerInput;
+   public PlayerInput PlayerInput
    {
-       get => _inputActions;
-       set => _inputActions = value; // Implement setter
+       get => _playerInput;
+       set => _playerInput = value; // Implement setter
    }
 
 
