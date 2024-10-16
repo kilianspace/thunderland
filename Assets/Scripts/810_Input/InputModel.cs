@@ -4,17 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
+[System.Serializable]
 public class InputModel{
 
-  public event Action<InputAction.CallbackContext> WhatUpDoes;
-  void OnUp(InputAction.CallbackContext context){
-    WhatUpDoes?.Invoke(context);
-  }
+  [SerializeField]
+  private IInputMode _mode;
+  [SerializeField]
+  private int test = 100;
+  public IInputMode Mode{ get; set; }
 
-  public InputModel()
+  public InputModel(IInputMode mode)
   {
     Log.Info("InputModel / InputModel Constructor", 1);
+    _mode = mode;
   }
 
 

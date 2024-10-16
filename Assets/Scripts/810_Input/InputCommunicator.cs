@@ -4,17 +4,14 @@ using UnityEngine;
 [System.Serializable]
 public class InputCommunicator : TransmitterReceiver<InputPayload> {
 
-  public InputPayload Payload{ get; set; }
-
-
 
   // Transmit
   public override void Transmit(InputPayload data)
   {
 
-    if (Payload != null)
+    if (data != null)
     {
-        base.Transmit(Payload);
+        base.Transmit(data);
         Log.Info("override Transmit");
     }
     else
@@ -24,9 +21,9 @@ public class InputCommunicator : TransmitterReceiver<InputPayload> {
   }
 
   // Method to receive a new payload
-  public void ReceivePayload(InputPayload payload)
+  public void ReceivePayload(InputPayload data)
   {
-      Receive(payload);
+      Receive(data);
       // Additional logic for processing received payload can be added here
   }
 

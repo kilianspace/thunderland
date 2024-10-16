@@ -1,35 +1,85 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+[System.Serializable]
 public class VerticalSelectionInputMode : IInputMode
 {
     private PlayerInput _playerInput;
 
-    //public Vector2 JoystickMove_L => _playerInput.actions["Move"].ReadValue<Vector2>(); // Use Move action
-    public Vector2 JoystickMove_L => Vector2.zero; // Disable Move input
-    public Vector2 JoystickMove_R => Vector2.zero; // Disable Move input
-    public bool JoystickClick_L => false; // Disabled in this mode
-    public bool JoystickClick_R => false; // Disabled in this mode
+    public event Action<InputAction.CallbackContext> JoystickMove_L;
+    public event Action<InputAction.CallbackContext> JoystickMove_R;
+    public event Action<InputAction.CallbackContext> JoystickClick_L;
+    public event Action<InputAction.CallbackContext> JoystickClick_R;
+
+    public event Action<InputAction.CallbackContext> L1;
+    public event Action<InputAction.CallbackContext> R1;
+    public event Action<InputAction.CallbackContext> L2;
+    public event Action<InputAction.CallbackContext> R2;
+
+    public event Action<InputAction.CallbackContext> Triangle;
+    public event Action<InputAction.CallbackContext> Square;
+    public event Action<InputAction.CallbackContext> Circle;
+    public event Action<InputAction.CallbackContext> Cross;
 
 
-    public bool L1 => false; // Disabled in this mode
-    public bool R1 => false; // Disabled in this mode
-    public bool L2 => false; // Disabled in this mode
-    public bool R2 => false; // Disabled in this mode
-
-    public bool Triangle  => false; // Disabled in this mode
-    public bool Square  => false; // Disabled in this mode
-    public bool Circle  => false; // Disabled in this mode
-    public bool Cross  => false; // Disabled in this mode
+    public event Action<InputAction.CallbackContext> Up;
+    public event Action<InputAction.CallbackContext> Down;
+    public event Action<InputAction.CallbackContext> Left;
+    public event Action<InputAction.CallbackContext> Right;
 
 
-    public bool Up => _playerInput.VERTICAL_SELECTION.UP.triggered; // Adjusted for correct action path
-    public bool Down => _playerInput.VERTICAL_SELECTION.DOWN.triggered; // Adjusted for correct action path
+
+    // Circle button
+    /////////////////////////////////////////////////////
+    private void OnCircle(InputAction.CallbackContext context)
+    {
+        Circle?.Invoke(context);
+        Log.Object(context, 1);
+    }
+    /////////////////////////////////////////////////////
+
+
+    // UP button
+    /////////////////////////////////////////////////////
+    private void OnUp(InputAction.CallbackContext context)
+    {
+        Up?.Invoke(context);
+        Log.Object(context, 1);
+    }
+    /////////////////////////////////////////////////////
+
+    // DOWN button
+    /////////////////////////////////////////////////////
+    private void OnDown(InputAction.CallbackContext context)
+    {
+        Down?.Invoke(context);
+        Log.Object(context, 1);
+    }
+    /////////////////////////////////////////////////////
+
+
 
     public VerticalSelectionInputMode(PlayerInput playerInput)
     {
         _playerInput = playerInput; // Initialize PlayerInput
+
+        // Enter
+        _playerInput.VERTICAL_SELECTION.ENTER.started += OnCircle;
+        _playerInput.VERTICAL_SELECTION.ENTER.performed += OnCircle;
+        _playerInput.VERTICAL_SELECTION.ENTER.canceled += OnCircle;
+
+        // Up
+        _playerInput.VERTICAL_SELECTION.UP.started += OnUp;
+        _playerInput.VERTICAL_SELECTION.UP.performed += OnUp;
+        _playerInput.VERTICAL_SELECTION.UP.canceled += OnUp;
+
+        //
+        _playerInput.VERTICAL_SELECTION.DOWN.started += OnDown;
+        _playerInput.VERTICAL_SELECTION.DOWN.performed += OnDown;
+        _playerInput.VERTICAL_SELECTION.DOWN.canceled += OnDown;
     }
 
-    public void UpdateInput() { }
+
 }

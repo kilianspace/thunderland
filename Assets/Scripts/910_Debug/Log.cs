@@ -7,9 +7,13 @@ public class Log
 
     private static int _counter;
 
-    public static void Object(object obj)
+    public static void Object(object obj, int count = 0)
     {
-        Debug.Log(obj);
+        if(count != 0){
+          _counter += count;
+        }
+
+        Debug.Log("[ <color=green>"  + _counter + " </color>] "+  obj);
     }
     public static void Info(string message, int count = 0)
     {

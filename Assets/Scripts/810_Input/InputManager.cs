@@ -5,51 +5,37 @@ using UnityEngine.InputSystem;
 
 public interface IInputManager : IManager
 {
-  // ID property
-  string ID { get; set; }
-  // Name property
-  string Name { get; set; }
-  // Active status property
-  bool IsActive { get; set; }
-  // Input System ActionMap Instance
-//  PlayerInput _playerInput { get; set; }
+
 
 }
+[System.Serializable]
 public class InputManager : MonoBehaviour, IInputManager
 {
-  // ID
-   private string _id;
-   public string ID
-   {
-       get => _id;
-       set => _id = value; // Implement setter
-   }
 
-   // Manager Name
-   private string _name;
-   public string Name
-   {
-       get => _name;
-       set => _name = value; // Implement setter
-   }
+  /// Input System
+  ///////////////////////////////////////
+  private static PlayerInput _playerInput;
+  ///////////////////////////////////////
 
-   // Activity Status
-   private bool _isActive;
-   public bool IsActive
-   {
-       get => _isActive;
-       set => _isActive = value; // Implement setter
-   }
-
-   // Input System
-   private PlayerInput _playerInput;
-   public PlayerInput PlayerInput
-   {
-       get => _playerInput;
-       set => _playerInput = value; // Implement setter
-   }
+  /// Payload
+  ///////////////////////////////////////
+  [SerializeField]
+  private InputPayload _inputPayload;
+  ///////////////////////////////////////
 
 
+  /// Current Input Mode
+  ///////////////////////////////////////
+  [SerializeField]
+  private IInputMode _currentInpuMode;
+  ///////////////////////////////////////
+
+
+  /// Input Obserevr
+  ///////////////////////////////////////
+  [SerializeField]
+//  private IInputMode _currentInpuMode;
+  ///////////////////////////////////////
 
 
 
@@ -59,15 +45,29 @@ public class InputManager : MonoBehaviour, IInputManager
       Log.Info("InputManager Initialize()");
    }
 
+
+   public void Awake(){
+     _playerInput = new PlayerInput();
+      _playerInput.Enable();
+     Log.Object( _playerInput, 1 );
+   }
+
    public void Start()
    {
        // Start logic
-       Log.Info("InputManager Start()");
+       Log.Info("InputManager Start()",1);
+
+
+       IInputMode inputMode =  new VerticalSelectionInputMode(_playerInput);
+       InputModel model =  new InputModel(inputMode);
+       _inputPayload = new InputPayload(model);
+
+
+       _currentInpuMode = inputMode;
    }
 
    public void Update()
    {
        // Update logic
-
    }
 }

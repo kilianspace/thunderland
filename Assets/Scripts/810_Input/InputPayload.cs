@@ -1,10 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+[System.Serializable]
 public class InputPayload{
 
   // Backing field for InputActions
+  [SerializeField]
   private InputModel _inputModel;
-
   // Public property to access InputActions
   public InputModel InputModel
   {

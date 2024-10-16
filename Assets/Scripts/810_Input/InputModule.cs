@@ -56,9 +56,6 @@ public class InputModule : BaseModule<InputPayload>
       Log.Info("InputModule / CreateCommunicator()", 1);
 
       _inputCommunicator = new InputCommunicator();
-      InputModel inputModel = new InputModel();
-      InputPayload payload = new InputPayload(inputModel);
-      _inputCommunicator.Payload = payload;
 
       return _inputCommunicator;
   }
