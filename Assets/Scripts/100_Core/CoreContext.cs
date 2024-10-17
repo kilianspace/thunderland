@@ -7,12 +7,13 @@ using UnityEngine.InputSystem;
 public class CoreContext
 {
 
-  public string debug = "CoreContext: test";
-
-
   // Constructor
-  public CoreContext(){
-    Log.Info(debug,1);
+  ///////////////////////////////////
+  public CoreContext(
+    string dummy
+  ){
+    Log.Info("CoreContext Constructor => " + dummy, 1);
   }
+  ///////////////////////////////////
 
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,39 +8,51 @@ using UnityEngine.InputSystem;
 public class FlowManager : MonoBehaviour
 {
 
-  // Singleton
-  public static FlowManager Instance { get; private set; }
+    // Singleton
+    public static FlowManager Instance { get; private set; }
 
-  // Flow Controll
-  [SerializeField]
-  private FlowCoordinator _flowCoordinator;
+    // Flow Controll
+    [SerializeField]
+    private FlowCoordinator _flowCoordinator;
 
-  private void Awake()
-  {
+    // Context
+    //////////////////////////////////////
+    [SerializeField]
+    private FlowContext _flowContext;
+    //////////////////////////////////////
 
-    // Singleton Pattern
-    ////////////////////////////////////////////
-    if( Instance != null && Instance != this )
+    private void Awake()
     {
-      Destroy(this.gameObject);
-      Debug.Log("FlowManager gameobject has got deleted");
-      return;
+
+        // Singleton Pattern
+        ////////////////////////////////////////////
+        if( Instance != null && Instance != this )
+        {
+        Destroy(this.gameObject);
+        Debug.Log("FlowManager gameobject has got deleted");
+        return;
+        }
+        // Set this as the only one
+        Instance = this;
+        Debug.Log("A new FlowManager has got created");
+        DontDestroyOnLoad(this.gameObject);
+        ////////////////////////////////////////////
+
+
+        // Initialize Context
+        ////////////////////////////////////////////
+        _flowContext = new FlowContext();
+        ////////////////////////////////////////////
+
+
+
+        // Flow Controller
+        ////////////////
+        _flowCoordinator = new FlowCoordinator();
+        _flowCoordinator.IgniteFlow();
+        ////////////////
+
+
     }
-    // Set this as the only one
-    Instance = this;
-    Debug.Log("A new FlowManager has got created");
-    DontDestroyOnLoad(this.gameObject);
-    ////////////////////////////////////////////
-
-
-    // Flow Controller
-    ////////////////
-    _flowCoordinator = new FlowCoordinator();
-    _flowCoordinator.IgniteFlow();
-    ////////////////
-
-
-  }
-
 
 }

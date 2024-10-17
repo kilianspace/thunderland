@@ -3,71 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public interface IInputManager : IManager
-{
 
-
-}
 [System.Serializable]
-public class InputManager : MonoBehaviour, IInputManager
+public class InputManager : MonoBehaviour
 {
 
-  /// Input System
-  ///////////////////////////////////////
-  private static PlayerInput _playerInput;
-  ///////////////////////////////////////
-
-  /// Payload
-  ///////////////////////////////////////
-  [SerializeField]
-  private InputPayload _inputPayload;
-  ///////////////////////////////////////
+    /// Input System
+    ///////////////////////////////////////
+    private static PlayerInput _playerInput;
+    ///////////////////////////////////////
 
 
-  /// Current Input Mode
-  ///////////////////////////////////////
-  [SerializeField]
-  private IInputMode _currentInpuMode;
-  ///////////////////////////////////////
-
-
-  /// Input Obserevr
-  ///////////////////////////////////////
-  [SerializeField]
-//  private IInputMode _currentInpuMode;
-  ///////////////////////////////////////
+    /// Current Input Mode
+    ///////////////////////////////////////
+    [SerializeField]
+    private IInputMode _currentInpuMode;
+    ///////////////////////////////////////
 
 
 
-   public void Initialize()
-   {
-       // Initialization logic
-      Log.Info("InputManager Initialize()");
-   }
+    // Stored Module Instances
+    ///////////////////////////////////
+    [SerializeField] private InputModule _inputModule;
+    ///////////////////////////////////
 
 
-   public void Awake(){
-     _playerInput = new PlayerInput();
-      _playerInput.Enable();
-     Log.Object( _playerInput, 1 );
-   }
-
-   public void Start()
-   {
-       // Start logic
-       Log.Info("InputManager Start()",1);
 
 
-       IInputMode inputMode =  new VerticalSelectionInputMode(_playerInput);
-       InputModel model =  new InputModel(inputMode);
-       _inputPayload = new InputPayload(model);
+    // Context
+    //////////////////////////////////////
+    [SerializeField]
+    private InputContext _inputContext;
+    ///////////////////////////////////////
 
 
-       _currentInpuMode = inputMode;
-   }
 
-   public void Update()
-   {
-       // Update logic
-   }
+    /// Input Obserevr
+    ///////////////////////////////////////
+    //  [SerializeField]
+    //  private IInputMode _currentInpuMode;
+    ///////////////////////////////////////
+
+
+
+    public void Awake(){
+        _playerInput = new PlayerInput();
+        _playerInput.Enable();
+        Log.Object( _playerInput, 1 );
+
+
+        ///////////////////////////////////
+        _inputContext = new InputContext();
+        ///////////////////////////////////
+
+    }
+
+    public void Start()
+    {
+        // Start logic
+        Log.Info("InputManager Start()",1);
+
+
+        IInputMode inputMode =  new VerticalSelectionInputMode(_playerInput);
+        InputModel model =  new InputModel(inputMode);
+        _currentInpuMode = inputMode;
+    }
+
+
+
+
+
+
 }

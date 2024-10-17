@@ -2,19 +2,23 @@ using System;
 using UnityEngine;
 
 [System.Serializable]
-public class CoreCommunicator : TransmitterReceiver<CorePayload> {
+public class CoreCommunicator : TransmitterReceiver<Payload<object>> {
 
-  public CorePayload Payload{ get; set; }
+
+    // Payload
+    ///////////////////////////////////
+    [SerializeField] public Payload<object> Payload{ get; set; }
+    ///////////////////////////////////
 
 
 
   // Transmit
-  public override void Transmit(CorePayload data)
+  public override void Transmit(Payload<object> data)
   {
 
-    if (Payload != null)
+    if (data != null)
     {
-        base.Transmit(Payload);
+        base.Transmit(data);
         Log.Info("override Transmit");
     }
     else
@@ -24,9 +28,9 @@ public class CoreCommunicator : TransmitterReceiver<CorePayload> {
   }
 
   // Method to receive a new payload
-  public void ReceivePayload(CorePayload payload)
+  public void ReceivePayload(Payload<object> data)
   {
-      Receive(payload);
+      Receive(data);
       // Additional logic for processing received payload can be added here
   }
 

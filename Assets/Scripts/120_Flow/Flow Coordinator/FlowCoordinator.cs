@@ -11,17 +11,9 @@ public class FlowCoordinator
 
     // Nestedd Class to store flow context data
     /////////////////////////////////////////////
-    [System.Serializable]// Show FlowContext in Inspector
-    public class FlowContext
-    {
-      // Show the CurrentState in the Inspector
-      public IPhase CurrentPhase;
-    }
     [SerializeField]// Show FlowContext in Inspector
     private FlowContext _flowContext;
     /////////////////////////////////////////////
-
-    public IPhase CurrentPhase;
 
     public void IgniteFlow(){
       Log.Info("FlowCoordinator => StartFlow", 1);
