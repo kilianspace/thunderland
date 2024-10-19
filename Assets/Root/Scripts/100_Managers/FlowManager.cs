@@ -1,4 +1,7 @@
 using UnityEngine;
+using UnityEngine.SceneManagement; // シーン管理のために必要
+
+
 
 // ゲーム全体のフローを管理するクラス
 public class FlowManager : MonoBehaviour
@@ -58,8 +61,8 @@ public class FlowManager : MonoBehaviour
     // 初期状態を設定するメソッド
     private void ActivateInitialState(StateContext context)
     {
-        var fieldState = _statemachine.GetOrCreateState<FieldState>(context);
-        _statemachine.SwitchState(fieldState);
+        var sceneSetupState = _statemachine.GetOrCreateState<SceneSetupSstate>(context);
+        _statemachine.SwitchState(sceneSetupState);
     }
 
     // バトル状態に切り替えるメソッド

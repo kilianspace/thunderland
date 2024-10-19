@@ -5,4 +5,9 @@ public interface IState
     IEnumerator Run();
     IEnumerator PerformFrame();
     void WillExit();
+
+
+    bool ShouldTransition(out IState nextState);
+
+    
 }
