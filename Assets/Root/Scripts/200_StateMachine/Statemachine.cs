@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 
@@ -5,71 +6,63 @@ using UnityEngine;
 public class Statemachine : MonoBehaviour
 {
     private IState _currentState; // 現在の状態を保持する変数
-    private Coroutine _task; // 実行中のコルーチンを保持する変数
-    private Context _context; // アルバムのコンテキストを保持する変数
-    private UIManager _uiManager; // UIを管理するUIManagerの参照
-    private EventManager _eventManager; // EventManagerの参照
-
-    // CurrentStateプロパティを追加
     public IState CurrentState => _currentState; // 現在の状態を取得するプロパティ
 
-    // ステートマシンの初期化処理
-    void Start()
-    {
-        // DiscographyModelのインスタンスを作成
-        DiscographyModel cd = new DiscographyModel();
-        // AlbumContextを初期化
-        _context = new Context(null, cd);
-        // UIManagerとEventManagerをシーンから取得
-        _uiManager = FindObjectOfType<UIManager>();
-        _eventManager = FindObjectOfType<EventManager>(); // EventManagerも取得する
+    private Coroutine _task; // 実行中のコルーチンを保持する変数
 
-        // 初期状態として FieldState を設定
-        ChangeState(new FieldState(this, _eventManager, _uiManager));
+    // 状態インスタンスを保持するための辞書
+    private Dictionary<System.Type, IState> _stateInstances = new Dictionary<System.Type, IState>();
+
+    // 状態を取得するメソッド
+    public T GetOrCreateState<T>(StateContext context) where T : IState, new()
+    {
+        System.Type type = typeof(T);
+        if (!_stateInstances.TryGetValue(type, out IState state))
+        {
+            state = new T();
+            _stateInstances[type] = state;
+        }
+
+        // 状態のコンテキストを設定
+        state.SetContext(context); // ここで状態のコンテキストを設定します
+
+        return (T)state;
     }
 
     // 状態を変更するためのメソッド
-    public void ChangeState(IState newState)
+    public void SwitchState(IState newState)
     {
-        Debug.Log($"Changing state from {_currentState} to {newState}");
-
-        // 新しい状態がnullの場合のエラーチェック
         if (newState == null)
         {
             Debug.LogError("新しい状態がnullです。");
             return;
         }
 
+        Debug.Log($"Changing state from {_currentState} to {newState}");
+
         // 現在実行中のコルーチンを停止
         if (_task != null)
         {
             StopCoroutine(_task); // 以前のコルーチンを停止
-            _currentState?.Exit(); // 以前の状態のExitメソッドを呼び出す
+            _currentState?.WillExit(); // 以前の状態のWillExitメソッドを呼び出す
         }
 
         // 新しい状態に変更
         _currentState = newState;
         // 新しい状態のコルーチンを開始
-        _task = StartCoroutine(Run());
+        _task = StartCoroutine(ExecuteCurrentState());
     }
 
     // 現在の状態の実行を管理するコルーチン
-    private IEnumerator Run()
+    private IEnumerator ExecuteCurrentState() //戻り値を IEnumerator に修正
     {
-        // 現在の状態がnullでない場合
         if (_currentState != null)
         {
-            Log.ObjectInfo("Play", _currentState, 1);
+            yield return _currentState.Run(); // ここで IEnumerator を返す
 
-            // 状態のPlayメソッドを呼び出し、完了するまで待機
-            yield return _currentState.Play(_context);
-
-            // 無限ループで状態のUpdateメソッドを実行
             while (true)
             {
-                Log.ObjectInfo("Update", _currentState, 1);
-
-                yield return _currentState.Update(_context); // 更新処理を実行
+                yield return _currentState.PerformFrame(); // 更新処理を実行
             }
         }
         else
