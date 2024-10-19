@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
 
-public class BattleState : IState
+public class SceneSetupSstate : IState
 {
     private StateContext _context;
+
+
 
     public void SetContext(StateContext context)
     {
@@ -12,20 +14,21 @@ public class BattleState : IState
 
     public IEnumerator Run()
     {
-        Debug.Log("バトル開始...");
-        yield return null; // バトル状態が1フレーム実行されることを示す
+        Debug.Log("新しいシーンを読み込み中。。。。");
+        yield return new WaitForSeconds(2); // 3秒待機
     }
 
     public IEnumerator PerformFrame()
     {
         // フィールド状態の更新処理
         Log.LogState(this.GetType());
+
         yield return null; // 更新処理を1フレーム実行
     }
 
     public void WillExit()
     {
-        Debug.Log("バトル状態から離れる...");
+        Debug.Log("SceneSetupSstateを離脱します");
     }
 
     public bool ShouldTransition(out IState nextState)

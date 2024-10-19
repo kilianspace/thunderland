@@ -54,15 +54,23 @@ public class Statemachine : MonoBehaviour
     }
 
     // 現在の状態の実行を管理するコルーチン
-    private IEnumerator ExecuteCurrentState() //戻り値を IEnumerator に修正
+    private IEnumerator ExecuteCurrentState()
     {
         if (_currentState != null)
         {
-            yield return _currentState.Run(); // ここで IEnumerator を返す
+            yield return _currentState.Run(); // 現在の状態のRunメソッドを実行
 
             while (true)
             {
-                yield return _currentState.PerformFrame(); // 更新処理を実行
+                // 現在の状態のPerformFrameメソッドを実行
+                yield return _currentState.PerformFrame();
+
+                // 状態遷移のチェック
+                if (_currentState.ShouldTransition(out IState nextState))
+                {
+                    SwitchState(nextState); // 次の状態に遷移
+                    yield break; // コルーチンを終了
+                }
             }
         }
         else
