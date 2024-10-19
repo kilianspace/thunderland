@@ -1,24 +1,39 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; // シーン管理のために必要
-
+using System.Collections;
+using System;
 
 
 // ゲーム全体のフローを管理するクラス
+[System.Serializable]
 public class FlowManager : MonoBehaviour
 {
 
-    private StateContext _context;
+    [SerializeField] private StateContext _context;
     private Statemachine _statemachine;
     private SignalPool _signalPool;
+
+
+    // Debug UI
+    ///////////////////////////////////////////////
+    private DebugCornerStatsUIManager _debugCornerStatsUIManager;
+    ///////////////////////////////////////////////
+
 
     // 初期化処理
     // FlowManagerの初期化処理
     void Start()
     {
 
+
         // Statemachine
         ///////////////////////////////////////////////
-        _statemachine = gameObject.AddComponent<Statemachine>();
+        _statemachine = GetComponent<Statemachine>();
+         if (_statemachine == null)
+         {
+             // StateMachineが見つからなかった場合、新たに追加する
+             _statemachine = gameObject.AddComponent<Statemachine>();
+         }
         ///////////////////////////////////////////////
 
         // SignalPool
@@ -30,6 +45,31 @@ public class FlowManager : MonoBehaviour
             return;
         }
         ///////////////////////////////////////////////
+
+
+        // Debugging
+        ///////////////////////////////////////////////
+        if(CoreManager.IsDebugMode)
+        {
+            _debugCornerStatsUIManager = FindObjectOfType<DebugCornerStatsUIManager>();
+            // デバッグモードが有効なときのみ表示を更新
+            _debugCornerStatsUIManager.WhichScene(SceneManager.GetActiveScene().name);
+
+            if (_debugCornerStatsUIManager == null)
+            {
+                Debug.LogError("DebugCornerStatsUIManagerが見つかりません。");
+                return;
+            }
+
+        // SignalBucketを登録
+        _signalPool.RegisterSignalBucket("StateChanged"); // ここでSignalBucketを登録
+        // StatemachineのSwitchState内でイベントを発行している
+        _signalPool.GetSignalBucket("StateChanged")?.DropIn("StateChanged", UpdateStateText);
+        }
+        ///////////////////////////////////////////////
+
+
+
 
 
         // Optional UIManager
@@ -58,6 +98,8 @@ public class FlowManager : MonoBehaviour
 
     }
 
+
+
     // 初期状態を設定するメソッド
     private void ActivateInitialState(StateContext context)
     {
@@ -65,17 +107,25 @@ public class FlowManager : MonoBehaviour
         _statemachine.SwitchState(sceneSetupState);
     }
 
-    // バトル状態に切り替えるメソッド
-    public void SwitchToBattleState()
-    {
-        var battleState = _statemachine.GetOrCreateState<BattleState>(_context);
-        _statemachine.SwitchState(battleState);
-    }
 
-    // ショップ状態に切り替えるメソッド
-    public void SwitchToShopState()
+
+
+    // Debug Methods
+    ///////////////////////////
+    private void UpdateStateText()
     {
-        var shopState = _statemachine.GetOrCreateState<ShopState>(_context);
-        _statemachine.SwitchState(shopState);
+        // 現在のステート名を取得してテキストを更新する処理
+        var currentStateName = _context.Statemachine.GetCurrentStateName(); // ステートマシンの現在のステート名を取得するメソッド
+        _debugCornerStatsUIManager.WhichState(currentStateName);
     }
+    private void OnDestroy()
+    {
+        // リスナーを削除してメモリリークを防ぐ
+        _signalPool.GetSignalBucket("StateChanged")?.DropOut("StateChanged", UpdateStateText);
+        Log.Info("FlowManager => OnDestroy()");
+    }
+    ///////////////////////////
+
+
+
 }

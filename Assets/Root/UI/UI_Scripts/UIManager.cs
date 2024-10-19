@@ -10,21 +10,21 @@ public class UIManager : MonoBehaviour, IUIManager
 
      private void Start()
      {
-         if (treasureText == null)
-         {
-             Debug.LogError("treasureTextが設定されていません。");
-         }
-
-
-         treasureText.text = "なんだこれ";
+         // if (treasureText == null)
+         // {
+         //     Debug.LogError("treasureTextが設定されていません。");
+         // }
+         //
+         //
+         // treasureText.text = "なんだこれ";
      }
 
      public void UpdateUI(string info)
      {
-         if (info != null)
-         {
-             treasureText.text = info;
-         }
+         // if (info != null)
+         // {
+         //     treasureText.text = info;
+         // }
      }
 
 }

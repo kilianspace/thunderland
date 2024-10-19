@@ -23,14 +23,40 @@ public class SceneExitState : IState
 
     public IEnumerator PerformFrame()
     {
-        SceneManager.LoadScene("CamelScene");
+
         yield break; // コルーチンを終了し、シーン遷移
     }
 
     public void WillExit()
     {
-        Debug.Log("SceneSetupSstateを離脱します");
+        // FlowManagerを削除し、削除処理が完了したらOnFlowManagerRemovedメソッドを呼び出す
+        // これにより、FlowManagerが持つリソースやイベントが正しく解放されることを保証する。
+        CoreManager.Instance.RemoveFlowManager(OnFlowManagerRemoved);
     }
+
+    // SceneExitState内のOnFlowManagerRemovedメソッド
+    private void OnFlowManagerRemoved()
+    {
+        // FlowManagerの削除が完了した後に新しいシーンの読み込みを開始するコルーチンを起動する。
+        // このタイミングで呼び出されることで、FlowManagerに関連する処理が全て終了したことが確約される。
+        CoroutineHandler.StartNewCoroutine(LoadNewScene("CamelScene"));
+    }
+
+    private IEnumerator LoadNewScene(string sceneName)
+    {
+        // 必要なら少し待機（1秒待つ）
+        yield return new WaitForSeconds(1);
+
+        // 指定されたシーンを読み込む
+        SceneManager.LoadScene(sceneName);
+
+        // シーンを離脱する際のデバッグメッセージを表示
+        Debug.Log("SceneSetupStateを離脱します");
+
+        // FlowManagerを初期化するための処理を追加
+        CoreManager.Instance.InitializeFlowManager();
+    }
+
 
     public bool ShouldTransition(out IState nextState)
     {

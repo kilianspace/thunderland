@@ -7,6 +7,9 @@ public class CoreManager : MonoBehaviour
 
     private FlowManager _flowManager; // FlowManagerのインスタンスを保持する
 
+    // デバッグフラグ
+    public static bool IsDebugMode { get; set; } = true; // デフォルトはtrue（開発中）
+
     void Awake()
     {
         // シングルトンのインスタンスを設定
@@ -21,15 +24,37 @@ public class CoreManager : MonoBehaviour
         }
     }
 
-    void Start()
+    public void Start() // アクセス修飾子をpublicに変更
     {
-        // FlowManagerを生成
-        _flowManager = gameObject.AddComponent<FlowManager>();
+        // FlowManagerが存在しない場合に新しく生成
+        InitializeFlowManager();
     }
 
-    // 必要に応じてCoreManagerで提供するメソッドを追加
+    // FlowManagerを初期化するためのメソッド
+    public void InitializeFlowManager()
+    {
+        if (_flowManager == null)
+        {
+            _flowManager = gameObject.AddComponent<FlowManager>();
+            Debug.Log("FlowManagerが生成されました。");
+        }
+    }
+
+    // FlowManagerを取得するためのメソッド
     public FlowManager GetFlowManager()
     {
         return _flowManager;
+    }
+
+
+    //この方法では、FlowManager の削除が完了したことを確認できるため、次の処理（新しいシーンの読み込み）を確実に行うことができます。待機時間を指定するのではなく、処理の完了を待つことで、意図した通りの動作が保証されるのです。
+    public void RemoveFlowManager(System.Action callback)
+    {
+        if (_flowManager != null)
+        {
+            Destroy(_flowManager); // FlowManagerを破棄
+            _flowManager = null; // 参照をクリア
+            callback?.Invoke(); // コールバックを呼び出す
+        }
     }
 }

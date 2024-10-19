@@ -1,10 +1,15 @@
-// ゲームを通じてタイトルからエンディングまで引き継がれる
+using UnityEngine;
+using UnityEngine.SceneManagement; // シーン管理のために必要
+using System.Collections;
+using System;
+
+[System.Serializable]
 public class StateContext
 {
 
     // Required Property
     //////////////////////////////////
-    private Statemachine _statemachine;
+    [SerializeField] private Statemachine _statemachine;
     public Statemachine Statemachine
     {
         get { return _statemachine; }
@@ -14,7 +19,7 @@ public class StateContext
 
     // SignalPool
     //////////////////////////////////
-    private SignalPool _signalPool;
+    [SerializeField] private SignalPool _signalPool;
     public SignalPool SignalPool
     {
         get { return _signalPool; }
@@ -24,7 +29,7 @@ public class StateContext
 
     // Required Property
     //////////////////////////////////
-    private IGameData _gameData;
+    [SerializeField] private IGameData _gameData;
     public IGameData GameData
     {
         get { return _gameData; }

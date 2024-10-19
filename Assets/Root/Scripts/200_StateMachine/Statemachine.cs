@@ -8,7 +8,17 @@ public class Statemachine : MonoBehaviour
     private IState _currentState; // 現在の状態を保持する変数
     public IState CurrentState => _currentState; // 現在の状態を取得するプロパティ
 
+    private IState _nexrState; 
+    public IState NextState => _nexrState; // デバッグ表示に使用
+
+
     private Coroutine _task; // 実行中のコルーチンを保持する変数
+
+
+    // ステート変更時のイベント名
+    private const string StateChangedEvent = "StateChanged";
+
+
 
     // 状態インスタンスを保持するための辞書
     private Dictionary<System.Type, IState> _stateInstances = new Dictionary<System.Type, IState>();
@@ -32,13 +42,23 @@ public class Statemachine : MonoBehaviour
     // 状態を変更するためのメソッド
     public void SwitchState(IState newState)
     {
+
         if (newState == null)
         {
             Debug.LogError("新しい状態がnullです。");
             return;
         }
 
-        Debug.Log($"Changing state from {_currentState} to {newState}");
+        // Debug
+        ///////////////////////////////////////////////////
+        if(CoreManager.IsDebugMode)
+        {
+            Debug.Log($"Changing state from {_currentState} to {newState}");
+            // ステートが変こされたので登録されてるイベントをファイアー（なければ登録してファイアー）
+            SignalPool.Instance.GetSignalBucket(StateChangedEvent)?.Pop(StateChangedEvent);
+        }
+        ////////////////////////////////////////////////////
+
 
         // 現在実行中のコルーチンを停止
         if (_task != null)
@@ -68,6 +88,7 @@ public class Statemachine : MonoBehaviour
                 // 状態遷移のチェック
                 if (_currentState.ShouldTransition(out IState nextState))
                 {
+                    _nexrState = nextState;
                     SwitchState(nextState); // 次の状態に遷移
                     yield break; // コルーチンを終了
                 }
@@ -78,4 +99,14 @@ public class Statemachine : MonoBehaviour
             Debug.LogError("現在の状態がnullです。");
         }
     }
+
+    // Debug Methods
+    ///////////////////////////
+    public string GetCurrentStateName()
+    {
+        return _nexrState?.GetType().Name ?? "None"; // 現在のステート名を返す
+    }
+    ///////////////////////////
+
+
 }
