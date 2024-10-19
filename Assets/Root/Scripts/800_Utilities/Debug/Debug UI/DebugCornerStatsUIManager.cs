@@ -1,11 +1,16 @@
-
 using UnityEngine;
+
+using UnityEngine.SceneManagement; // シーン管理のために必要
+using System.Collections;
+using System;
+
 using TMPro; // TextMesh Pro 用の名前空間
 
+[System.Serializable]
 public class DebugCornerStatsUIManager : MonoBehaviour, IUIManager
 {
-    public TextMeshProUGUI scneName; // ステートを表示するTextMeshProUGUIコンポーネント
-    public TextMeshProUGUI stateName; // ステートを表示するTextMeshProUGUIコンポーネント
+    [SerializeField] private TextMeshProUGUI scneName; // ステートを表示するTextMeshProUGUIコンポーネント
+    [SerializeField] private TextMeshProUGUI stateName; // ステートを表示するTextMeshProUGUIコンポーネント
 
 
     // ステートを更新するメソッド

@@ -16,15 +16,21 @@ public class FlowManager : MonoBehaviour
 
     // Debug UI
     ///////////////////////////////////////////////
-    private DebugCornerStatsUIManager _debugCornerStatsUIManager;
+    [SerializeField] private DebugCornerStatsUIManager _debugCornerStatsUIManager;
     ///////////////////////////////////////////////
-
 
     // 初期化処理
     // FlowManagerの初期化処理
-    void Start()
+    private void Start()
     {
+        // InitializeFlowManagerコルーチンを開始
+        StartCoroutine(InitializeFlowManager());
+    }
 
+
+
+    private IEnumerator InitializeFlowManager()
+    {
 
         // Statemachine
         ///////////////////////////////////////////////
@@ -42,29 +48,31 @@ public class FlowManager : MonoBehaviour
         if (_signalPool == null)
         {
             Debug.LogError("SignalPoolが取得できませんでした。");
-            return;
+            yield break; // 終了
         }
         ///////////////////////////////////////////////
 
 
         // Debugging
         ///////////////////////////////////////////////
-        if(CoreManager.IsDebugMode)
+        // DebugCornerStatsUIManagerの生成を待つ
+        yield return new WaitUntil(() => FindObjectOfType<DebugCornerStatsUIManager>() != null);
+        _debugCornerStatsUIManager = FindObjectOfType<DebugCornerStatsUIManager>();
+        if (_debugCornerStatsUIManager != null)
         {
-            _debugCornerStatsUIManager = FindObjectOfType<DebugCornerStatsUIManager>();
-            // デバッグモードが有効なときのみ表示を更新
-            _debugCornerStatsUIManager.WhichScene(SceneManager.GetActiveScene().name);
-
-            if (_debugCornerStatsUIManager == null)
+            if (CoreManager.IsDebugMode)
             {
-                Debug.LogError("DebugCornerStatsUIManagerが見つかりません。");
-                return;
+                _debugCornerStatsUIManager.WhichScene(SceneManager.GetActiveScene().name);
+                // SignalBucketを登録
+                _signalPool.RegisterSignalBucket("StateChanged");
+                // StatemachineのSwitchState内でイベントを発行している
+                _signalPool.GetSignalBucket("StateChanged")?.DropIn("StateChanged", UpdateStateText);
             }
-
-        // SignalBucketを登録
-        _signalPool.RegisterSignalBucket("StateChanged"); // ここでSignalBucketを登録
-        // StatemachineのSwitchState内でイベントを発行している
-        _signalPool.GetSignalBucket("StateChanged")?.DropIn("StateChanged", UpdateStateText);
+        }
+        else
+        {
+            Debug.LogError("DebugCornerStatsUIManagerが見つかりません。");
+            yield break; // 終了
         }
         ///////////////////////////////////////////////
 
@@ -78,7 +86,7 @@ public class FlowManager : MonoBehaviour
         if (_uiManager == null)
         {
             Debug.LogError("UIManagerが見つかりません。");
-            return;
+            yield break; // 終了
         }
         ///////////////////////////////////////////////
 
