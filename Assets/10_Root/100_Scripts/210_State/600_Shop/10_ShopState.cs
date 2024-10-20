@@ -1,9 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ShopState : IState
 {
     private StateContext _context;
+   private InputJunction _inputJunction;
+
 
     public void SetContext(StateContext context)
     {
@@ -13,6 +16,16 @@ public class ShopState : IState
     public IEnumerator Run()
     {
         Debug.Log("ショップを開く...");
+
+        GameInputs gameInputs = new GameInputs(); // Your GameInputs implementation
+         InputAction inputAction = gameInputs.SELECT.Up;
+         GameState gameState = GameState.TitleMenu_Top;
+
+         _inputJunction = new InputJunction(gameInputs, inputAction, gameState);
+
+         // Register callbacks for the current game state
+         _inputJunction.RegisterCallbacksForGameState();
+
         yield return null; // ショップ状態が1フレーム実行されることを示す
     }
 
@@ -25,6 +38,9 @@ public class ShopState : IState
 
     public void WillExit()
     {
+
+        // Unregister callbacks when the object is destroyed
+        _inputJunction.UnregisterCallbacksForGameState();
         Debug.Log("ショップ状態から離れる...");
     }
 
