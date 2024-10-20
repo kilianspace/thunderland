@@ -1,0 +1,3 @@
+=== Log Start ===
+2024/10/20 04:57:55: [Log] [ <color=yellow>0 </color>] FlowManager => OnDestroy()
+2024/10/20 04:57:55: [Log] === Log End ===

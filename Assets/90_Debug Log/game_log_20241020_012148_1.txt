@@ -1,0 +1,8 @@
+=== Log Start ===
+2024/10/20 01:21:48: [Error] treasureTextが設定されていません。
+2024/10/20 01:21:48: [Exception] NullReferenceException: Object reference not set to an instance of an object
+2024/10/20 01:21:48: [Log] _signalPool: SignalPool (SignalPool)
+2024/10/20 01:21:48: [Log] _uiManager: UI Manager (UIManager)
+2024/10/20 01:21:48: [Log] Changing state from  to SceneSetupSstate
+2024/10/20 01:21:48: [Log] 新しいシーンを読み込み中。。。。
+2024/10/20 01:21:54: [Log] === Log End ===

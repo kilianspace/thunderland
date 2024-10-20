@@ -1,0 +1,11 @@
+=== Log Start ===
+2024/10/20 05:08:42: [Log] [ <color=yellow>0 </color>] FlowManager => OnDestroy()
+2024/10/20 05:08:43: [Log] SceneSetupStateを離脱します
+2024/10/20 05:08:43: [Log] FlowManagerが生成されました。
+2024/10/20 05:08:43: [Log] _signalPool: SignalPool (SignalPool)
+2024/10/20 05:08:43: [Log] _uiManager: UI Manager (UIManager)
+2024/10/20 05:08:43: [Log] Changing state from SceneSetupSstate to SceneSetupSstate
+2024/10/20 05:08:43: [Log] イベントをポップしています: StateChanged
+2024/10/20 05:08:43: [Log] SceneSetupSstateを離脱します
+2024/10/20 05:08:43: [Log] 新しいシーンを読み込み中。。。。
+2024/10/20 05:08:43: [Log] === Log End ===
