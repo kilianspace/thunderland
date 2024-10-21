@@ -10,6 +10,7 @@ public class FlowManager : MonoBehaviour
     [SerializeField] private StateContext _context;
     private Statemachine _statemachine;
     private SignalPool _signalPool;
+    public static InputJunction inputJunction;
 
     // Debug UI
     ///////////////////////////////////////////////
@@ -55,7 +56,17 @@ public class FlowManager : MonoBehaviour
             Debug.LogError("SignalPoolが取得できませんでした。");
             yield break; // 終了
         }
+        //////////////////////////////////////////////
+
+
+        // InputJunction for Inout System
         ///////////////////////////////////////////////
+        GameInputs inputs = new GameInputs(); // Inputアセットから生成
+        inputJunction = InputJunction.Instance(inputs);
+        ///////////////////////////////////////////////
+
+
+
 
         // Debugging
         ///////////////////////////////////////////////
@@ -94,7 +105,7 @@ public class FlowManager : MonoBehaviour
         ///////////////////////////////////////////////
         Debug.Log("_signalPool: " + _signalPool);
         Debug.Log("_uiManager: " + _uiManager);
-        _context = StateContext.Create(_statemachine, _signalPool).WithOptionalUIManager(_uiManager);
+        _context = StateContext.Create(_statemachine, _signalPool, inputJunction).WithOptionalUIManager(_uiManager);
         ///////////////////////////////////////////////
 
         // 初期状態を設定

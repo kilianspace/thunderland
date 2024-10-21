@@ -41,14 +41,17 @@ public class SceneSetupState : IState
             Debug.Log("Sキーが押されたため、ShopStateに遷移します。");
         }
         else if(Input.GetKeyDown(KeyCode.B)){
-            nextState = new BattleState(); // ShopStateに遷移
+            nextState = new BattleState(); //BattleStateに遷移
             Debug.Log("Bキーが押されたため、BattleStateに遷移します。");
         }
         else if(Input.GetKeyDown(KeyCode.F)){
-            nextState = new FieldState(); // ShopStateに遷移
+            nextState = new FieldState(); // FieldStateに遷移
             Debug.Log("Fキーが押されたため、FieldStateに遷移します。");
         }
-
+        else if(Input.GetKeyDown(KeyCode.T)){
+            nextState = new TitleMenuTopState(); // TitleMenuTopStateに遷移
+            Debug.Log("Tキーが押されたため、TitleMenuTopStateに遷移します。");
+        }
         // 次の状態が設定されたかどうかを返す
         return nextState != null;
     }

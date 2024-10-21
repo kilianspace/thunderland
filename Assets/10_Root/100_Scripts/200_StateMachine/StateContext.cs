@@ -27,6 +27,17 @@ public class StateContext
     }
     //////////////////////////////////
 
+    // Input Junction
+    //////////////////////////////////
+    public InputJunction _inputJunction;
+    public InputJunction InputJunction
+    {
+        get { return _inputJunction; }
+        set { _inputJunction = value; }
+    }
+    //////////////////////////////////
+
+
     // Required Property
     //////////////////////////////////
     [SerializeField] private IGameData _gameData;
@@ -42,11 +53,13 @@ public class StateContext
     private StateContext(
         Statemachine statemachine,
         SignalPool signalPool,
+        InputJunction inputJunction,
         IGameData  gameData = null)
     {
 
         _statemachine = statemachine;
         _signalPool = signalPool;
+        _inputJunction = inputJunction;
         _gameData = gameData;
     }
     //////////////////////////////////
@@ -56,10 +69,11 @@ public class StateContext
     public static StateContext Create(
         Statemachine statemachine,
         SignalPool signalPool,
+        InputJunction inputJunction,
         IGameData  gameData = null
     )
     {
-        return new StateContext(statemachine, signalPool, gameData);
+        return new StateContext(statemachine, signalPool, inputJunction, gameData);
     }
     //////////////////////////////////
 
@@ -77,5 +91,8 @@ public class StateContext
         return this;
     }
     //////////////////////////////////
+
+
+
 
 }

@@ -2,7 +2,7 @@
     "name": "InputMap",
     "maps": [
         {
-            "name": "Select",
+            "name": "SELECT",
             "id": "40957c5f-7392-4969-a436-37cb978bf4ed",
             "actions": [
                 {
@@ -207,7 +207,7 @@
             ]
         },
         {
-            "name": "FieldMove",
+            "name": "FIELD_MOVE",
             "id": "b2496bc4-00ee-4464-b758-8446ebf6a26d",
             "actions": [
                 {
