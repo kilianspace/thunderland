@@ -3,16 +3,13 @@ using UnityEngine.SceneManagement; // シーン管理のために必要
 using System.Collections;
 using System;
 
-
 // ゲーム全体のフローを管理するクラス
 [System.Serializable]
 public class FlowManager : MonoBehaviour
 {
-
     [SerializeField] private StateContext _context;
     private Statemachine _statemachine;
     private SignalPool _signalPool;
-
 
     // Debug UI
     ///////////////////////////////////////////////
@@ -25,33 +22,40 @@ public class FlowManager : MonoBehaviour
     {
         // InitializeFlowManagerコルーチンを開始
         StartCoroutine(InitializeFlowManager());
+
+        // Get the CharacterBook component from the scene
+        CharacterLoader characterLoader = FindObjectOfType<CharacterLoader>();
+        if (characterLoader == null)
+        {
+            Debug.LogError("CharacterLoader component not found in the scene.");
+            return; // Exit if not found
+        }
+
+        // Load characters at the start
+        characterLoader.LoadCharacters();
     }
-
-
 
     private IEnumerator InitializeFlowManager()
     {
-
         // Statemachine
         ///////////////////////////////////////////////
         _statemachine = GetComponent<Statemachine>();
-         if (_statemachine == null)
-         {
-             // StateMachineが見つからなかった場合、新たに追加する
-             _statemachine = gameObject.AddComponent<Statemachine>();
-         }
+        if (_statemachine == null)
+        {
+            // StateMachineが見つからなかった場合、新たに追加する
+            _statemachine = gameObject.AddComponent<Statemachine>();
+        }
         ///////////////////////////////////////////////
 
         // SignalPool
         ///////////////////////////////////////////////
-         _signalPool = SignalPool.Instance; // シングルトンインスタンスを取得
+        _signalPool = SignalPool.Instance; // シングルトンインスタンスを取得
         if (_signalPool == null)
         {
             Debug.LogError("SignalPoolが取得できませんでした。");
             yield break; // 終了
         }
         ///////////////////////////////////////////////
-
 
         // Debugging
         ///////////////////////////////////////////////
@@ -76,10 +80,6 @@ public class FlowManager : MonoBehaviour
         }
         ///////////////////////////////////////////////
 
-
-
-
-
         // Optional UIManager
         ///////////////////////////////////////////////
         IUIManager _uiManager = FindObjectOfType<UIManager>();
@@ -90,7 +90,6 @@ public class FlowManager : MonoBehaviour
         }
         ///////////////////////////////////////////////
 
-
         // State Context
         ///////////////////////////////////////////////
         Debug.Log("_signalPool: " + _signalPool);
@@ -98,25 +97,18 @@ public class FlowManager : MonoBehaviour
         _context = StateContext.Create(_statemachine, _signalPool).WithOptionalUIManager(_uiManager);
         ///////////////////////////////////////////////
 
-
         // 初期状態を設定
         ///////////////////////////////////////////////
         ActivateInitialState(_context);  // context を引数として渡す
         ///////////////////////////////////////////////
-
     }
-
-
 
     // 初期状態を設定するメソッド
     private void ActivateInitialState(StateContext context)
     {
-        var sceneSetupState = _statemachine.GetOrCreateState<SceneSetupSstate>(context);
+        var sceneSetupState = _statemachine.GetOrCreateState<SceneSetupState>(context);
         _statemachine.SwitchState(sceneSetupState);
     }
-
-
-
 
     // Debug Methods
     ///////////////////////////
@@ -126,14 +118,12 @@ public class FlowManager : MonoBehaviour
         var currentStateName = _context.Statemachine.GetCurrentStateName(); // ステートマシンの現在のステート名を取得するメソッド
         _debugCornerStatsUIManager.WhichState(currentStateName);
     }
+
     private void OnDestroy()
     {
         // リスナーを削除してメモリリークを防ぐ
         _signalPool.GetSignalBucket("StateChanged")?.DropOut("StateChanged", UpdateStateText);
-        Log.Info("FlowManager => OnDestroy()");
+        Debug.Log("FlowManager => OnDestroy()");
     }
     ///////////////////////////
-
-
-
 }

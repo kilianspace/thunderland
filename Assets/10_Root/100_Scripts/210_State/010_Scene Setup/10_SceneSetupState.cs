@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class SceneSetupSstate : IState
+public class SceneSetupState : IState
 {
     private StateContext _context;
 

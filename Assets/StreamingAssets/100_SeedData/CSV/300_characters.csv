@@ -1,0 +1,13 @@
+ID,Name,Type,Subtype,HP,Attack,Defense,SpecialSkills,DropItems,DropRate
+1,Fire Dragon,Monster,Dragon,500,150,100,Fire Breath|Tail Swipe,Dragon Scale|Fire Crystal,0.25
+2,Ice Dragon,Monster,Dragon,450,130,120,Ice Breath|Wing Attack,Ice Crystal|Dragon Horn,0.20
+3,Vine Monster,Monster,Plant,200,50,30,Bind|Poison Ivy,Herb|Vine,0.50
+4,Flower Spirit,Monster,Plant,180,40,20,Heal|Sleep Powder,Flower Petal|Magic Herb,0.40
+5,Slime King,Monster,Slime,300,40,50,Slime Punch|Regenerate,Slime Gel|Gold Coin,0.35
+6,Baby Slime,Monster,Slime,80,10,5,Bounce|Slime Splash,Slime Gel|Small Coin,0.70
+7,Dark Devil,Monster,Devil,400,120,90,Dark Flame|Shadow Strike,Devil Horn|Dark Crystal,0.15
+8,Imp,Monster,Devil,150,60,40,Fireball|Curse,Imp Wing|Small Potion,0.50
+9,Sharkman,Monster,Fish,350,90,60,Water Slash|Bite,Fish Scale|Shark Fin,0.30
+10,Fish Warrior,Monster,Fish,200,80,50,Trident Thrust|Water Shield,Fish Scale|Water Gem,0.25
+11,Hero Member,Member,,300,100,70,Shield Bash|Cure,Health Potion|Gold Coin,0.50
+12,Warrior Member,Member,,250,120,80,Slash|Block,Iron Shield|Magic Herb,0.40
