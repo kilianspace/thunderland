@@ -2,6 +2,9 @@
 public class FieldData: IGameData
 {
 
+    
+
+
     public FieldData()
     {
     }
