@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4123833867425505242}
   - component: {fileID: 4123833867425505243}
   m_Layer: 0
-  m_Name: '[REQUIRED] CameraModule'
+  m_Name: 800_[REQUIRED] CameraModule
   m_TagString: Untagged
   m_Icon: {fileID: 2800000, guid: 3e9aae350934e02449e499ffc79ca0f3, type: 3}
   m_NavMeshLayer: 0
