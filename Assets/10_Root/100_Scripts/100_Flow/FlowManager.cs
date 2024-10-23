@@ -11,6 +11,11 @@ public class FlowManager : MonoBehaviour
     private Statemachine _statemachine;
     private SignalPool _signalPool;
 
+    private IUIManager _uiManager;
+    private GameDataManager _gameDataManager;
+
+
+
     // Debug UI
     ///////////////////////////////////////////////
     [SerializeField] private DebugCornerStatsUIManager _debugCornerStatsUIManager;
@@ -67,10 +72,22 @@ public class FlowManager : MonoBehaviour
 
         // Optional UIManager
         ///////////////////////////////////////////////
-        IUIManager _uiManager = FindObjectOfType<UIManager>();
+        _uiManager = FindObjectOfType<UIManager>();
         if (_uiManager == null)
         {
             Debug.LogError("UIManagerが見つかりません。");
+            yield break; // 終了
+        }
+        ///////////////////////////////////////////////
+
+
+
+        // Optional Game Data
+        ///////////////////////////////////////////////
+        _gameDataManager = FindObjectOfType<GameDataManager>();
+        if (_gameDataManager == null)
+        {
+            Debug.LogError("GameDataManagerが見つかりません。");
             yield break; // 終了
         }
         ///////////////////////////////////////////////
@@ -106,7 +123,9 @@ public class FlowManager : MonoBehaviour
         ///////////////////////////////////////////////
         Debug.Log("_signalPool: " + _signalPool);
         Debug.Log("_uiManager: " + _uiManager);
-        _context = StateContext.Create(_statemachine, _signalPool).WithOptionalUIManager(_uiManager);
+        _context = StateContext.Create(_statemachine, _signalPool)
+        .WithOptionalUIManager(_uiManager)
+        .WithOptionaGameDataManager(_gameDataManager);
         ///////////////////////////////////////////////
 
         // 初期状態を設定
@@ -134,7 +153,7 @@ public class FlowManager : MonoBehaviour
     private void OnDestroy()
     {
         // リスナーを削除してメモリリークを防ぐ
-        _signalPool.GetSignalBucket("StateChanged")?.DropOut("StateChanged", UpdateStateText);
+        _signalPool.GetSignalBucket(EventContants.STATE_CHANGED)?.DropOut(EventContants.STATE_CHANGED, UpdateStateText);
         Debug.Log("FlowManager => OnDestroy()");
     }
     ///////////////////////////

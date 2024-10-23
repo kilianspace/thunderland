@@ -1,9 +1,10 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 // プレイヤーパーティーのデータを管理するクラス
 [System.Serializable]
-public class PartyData : IGameData
+public class PartyData : MonoBehaviour, IGameData
 {
     // 所持金
     public int Gold { get; set; }

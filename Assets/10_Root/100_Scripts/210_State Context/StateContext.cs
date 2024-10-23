@@ -48,15 +48,15 @@ public class StateContext
 
     // Required Property
     //////////////////////////////////
-    [SerializeField] private IGameData _gameData;
-    public IGameData GameData
+    [SerializeField] private GameDataManager _gameDataManager;
+    public GameDataManager GameDataManager
     {
-        get { return _gameData; }
-        set { _gameData = value; }
+        get { return _gameDataManager; }
+        set { _gameDataManager = value; }
     }
-    public StateContext WithOptionalGameData(IGameData gameData)
+    public StateContext WithOptionaGameDataManager(GameDataManager gameDataManager)
     {
-        _gameData = gameData;
+        _gameDataManager = gameDataManager;
         return this;
     }
     //////////////////////////////////

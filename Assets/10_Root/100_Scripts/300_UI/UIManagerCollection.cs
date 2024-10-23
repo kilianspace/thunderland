@@ -3,11 +3,16 @@ using UnityEngine.UI; // 必要な名前空間
 using System.Collections.Generic;
 
 // IUIManagerを継承したUIマネージャのラッパークラス
-public class UIManagerDictionary
+public class UIManagerCollection
 {
     private Dictionary<string, IUIManager> _uiManagers; // UIマネージャを格納する辞書
+    public Dictionary<string, IUIManager> UIManagers
+    {
+        get { return _uiManagers; }
+        set { _uiManagers = value; }
+    }
 
-    public UIManagerDictionary()
+    public UIManagerCollection()
     {
         _uiManagers = new Dictionary<string, IUIManager>();
     }
