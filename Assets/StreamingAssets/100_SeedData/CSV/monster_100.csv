@@ -1,4 +1,3 @@
-monsterName,health,attackPower
-Slime,100,10
-Goblin,150,20
-Dragon,500,50
+MonsterName, Health, AttackPower, DefensePower, Description
+Slime, 100, 10, 5, A basic monster.
+Dragon, 5000, 300, 200, A fearsome dragon.

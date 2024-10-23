@@ -17,7 +17,9 @@ public class StateContext
     }
     //////////////////////////////////
 
-    // SignalPool
+
+
+    // SignalPool SINGLETON
     //////////////////////////////////
     [SerializeField] private SignalPool _signalPool;
     public SignalPool SignalPool
@@ -29,15 +31,15 @@ public class StateContext
 
 
 
-    // [OPTION] UI Manager
+    // UI Manager SINGLETON
     //////////////////////////////////
-    [SerializeField] private IUIManager _uiManager;
-    public IUIManager UIManager
+    [SerializeField] private UIManager _uiManager;
+    public UIManager UIManager
     {
         get { return _uiManager; }
         set { _uiManager = value; }
     }
-    public StateContext WithOptionalUIManager(IUIManager uiManager)
+    public StateContext WithOptionalUIManager(UIManager uiManager)
     {
         _uiManager = uiManager;
         return this;
@@ -46,7 +48,7 @@ public class StateContext
 
 
 
-    // Required Property
+    // Game Data Manager SINGLETON
     //////////////////////////////////
     [SerializeField] private GameDataManager _gameDataManager;
     public GameDataManager GameDataManager

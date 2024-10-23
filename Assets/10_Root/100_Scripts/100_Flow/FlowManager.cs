@@ -11,7 +11,7 @@ public class FlowManager : MonoBehaviour
     private Statemachine _statemachine;
     private SignalPool _signalPool;
 
-    private IUIManager _uiManager;
+    private UIManager _uiManager;
     private GameDataManager _gameDataManager;
 
 
@@ -29,8 +29,8 @@ public class FlowManager : MonoBehaviour
         StartCoroutine(InitializeFlowManager());
 
 
-        CSVToScriptableObject _cSVToScriptableObject = FindObjectOfType<CSVToScriptableObject>();
-        _cSVToScriptableObject.GenerateScriptableObjects();
+    //    CSVToScriptableObject _cSVToScriptableObject = FindObjectOfType<CSVToScriptableObject>();
+    //    _cSVToScriptableObject.GenerateScriptableObjects();
 
         // // Get the CharacterBook component from the scene
         // CharacterLoader characterLoader = FindObjectOfType<CharacterLoader>();
@@ -78,6 +78,8 @@ public class FlowManager : MonoBehaviour
             Debug.LogError("UIManagerが見つかりません。");
             yield break; // 終了
         }
+        // GameDataManagerの初期化が完了するのを待つ
+        yield return new WaitUntil(() => _uiManager.Collection != null);
         ///////////////////////////////////////////////
 
 
@@ -90,6 +92,8 @@ public class FlowManager : MonoBehaviour
             Debug.LogError("GameDataManagerが見つかりません。");
             yield break; // 終了
         }
+        // GameDataManagerの初期化が完了するのを待つ
+        yield return new WaitUntil(() => _gameDataManager.Collection != null);
         ///////////////////////////////////////////////
 
 
