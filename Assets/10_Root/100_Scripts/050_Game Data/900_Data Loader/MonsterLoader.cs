@@ -27,22 +27,18 @@ public class MonsterLoader
             Directory.CreateDirectory(directoryPath);
         }
 
-        // ヘッダー行をスキップするため、1行目から開始
         for (int i = 1; i < csvLines.Length; i++)
         {
             string line = csvLines[i];
-
-            // 行をカンマで分割してプロパティを取得
             string[] values = line.Split(',');
 
             if (values.Length < 5) continue; // 必要なプロパティが不足している場合はスキップ
 
-            // 新しいMonsterのインスタンスを作成
             Monster monster = ScriptableObject.CreateInstance<Monster>();
 
             // 名前を設定
             string monsterName = values[0].Trim();
-            monster.name = monsterName; // 名前を設定
+            monster.Name = monsterName; // プロパティを使用して名前を設定
             Log.Info(monsterName); // ログに名前を出力
 
             // ヘルスをパース
@@ -69,7 +65,7 @@ public class MonsterLoader
             }
             monster.Defense = defense; // 防御力設定
 
-            // 説明文を設定（必要であれば）
+            // 説明文を設定
             monster.Description = values[4].Trim(); // 説明
 
             // アセットとして保存するパスを指定

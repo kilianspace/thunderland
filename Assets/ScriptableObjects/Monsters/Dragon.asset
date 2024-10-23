@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb153a609e7b94e4eb5111bb1c23d606, type: 3}
   m_Name: Dragon
   m_EditorClassIdentifier: 
-  name: 
+  unitName: Dragon
   health: 5000
   attack: 300
   defense: 200
