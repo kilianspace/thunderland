@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class SceneSetupState : IState
+public class TitleMenuSceneSetupState : IState
 {
     private StateContext _context;
 
@@ -17,8 +17,10 @@ public class SceneSetupState : IState
 
     public IEnumerator Run()
     {
-        Debug.Log("新しいシーンを読み込み中。。。。");
-        yield return new WaitForSeconds(2); // 3秒待機
+        Debug.Log("TitleMenuSceneSetupStateです。。。。");
+
+
+        yield return new WaitForSeconds(4); // 3秒待機
     }
 
     public IEnumerator PerformFrame()

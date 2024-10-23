@@ -32,4 +32,10 @@ public class DebugCornerStatsUIManager : MonoBehaviour, IUIManager
 
     }
 
+
+    public void HandleInput()
+    {
+
+    }
+
 }

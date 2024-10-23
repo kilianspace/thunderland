@@ -1,6 +1,6 @@
 public static class UIManagerNameKeyConstants
 {
 
-    // Title Menu Top
+    // Title Menu Top Manager
     public const string TITLEMENU_TOP = "titleMenuTopManager";
 }

@@ -80,7 +80,11 @@ public class FlowManager : MonoBehaviour
         }
         // GameDataManagerの初期化が完了するのを待つ
         yield return new WaitUntil(() => _uiManager.Collection != null);
-        ///////////////////////////////////////////////
+
+        // Add TitleMenuTopUIManager
+        //TitleMenuTopUIManager _titleMenuTopUIManager = FindObjectOfType<TitleMenuTopUIManager>();
+        _uiManager.RegisterUIManager<TitleMenuTopUIManager>(UIManagerNameKeyConstants.TITLEMENU_TOP);
+
 
 
 
@@ -141,7 +145,7 @@ public class FlowManager : MonoBehaviour
     // 初期状態を設定するメソッド
     private void ActivateInitialState(StateContext context)
     {
-        var sceneSetupState = _statemachine.GetOrCreateState<SceneSetupState>(context);
+        var sceneSetupState = _statemachine.GetOrCreateState<TitleMenuSceneSetupState>(context);
         _statemachine.SwitchState(sceneSetupState);
     }
 

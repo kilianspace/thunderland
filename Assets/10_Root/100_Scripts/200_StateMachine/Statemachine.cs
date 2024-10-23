@@ -1,24 +1,39 @@
-using System.Collections.Generic;
-using System.Collections;
-using UnityEngine;
+using System.Collections; // IEnumerator、Coroutineのため
+using System.Collections.Generic; // Dictionaryのため
+using UnityEngine; // MonoBehaviourのため
 
-// 状態遷移を管理するためのステートマシン
 public class Statemachine : MonoBehaviour
 {
-    private IState _currentState; // 現在の状態を保持する変数
-    public IState CurrentState => _currentState; // 現在の状態を取得するプロパティ
-
-    private IState _nexrState;
-    public IState NextState => _nexrState; // デバッグ表示に使用
 
 
+
+    /////////////////////////////////////////
+    private IState _currentState;
+    public IState CurrentState => _currentState;
+    /////////////////////////////////////////
+
+
+    /////////////////////////////////////////
+    private IState _nextState; // 修正：変数名を修正
+    public IState NextState => _nextState; // デバッグ表示に使用
+    /////////////////////////////////////////
+
+
+    /////////////////////////////////////////
     private Coroutine _task; // 実行中のコルーチンを保持する変数
+    /////////////////////////////////////////
+
 
 
     // 状態インスタンスを保持するための辞書
+    /////////////////////////////////////////
     private Dictionary<System.Type, IState> _stateInstances = new Dictionary<System.Type, IState>();
+    /////////////////////////////////////////
 
-    // 状態を取得するメソッド
+
+
+    // 新規作成もしくは状態を取得するメソッド
+    /////////////////////////////////////////
     public T GetOrCreateState<T>(StateContext context) where T : IState, new()
     {
         System.Type type = typeof(T);
@@ -33,11 +48,14 @@ public class Statemachine : MonoBehaviour
 
         return (T)state;
     }
+    /////////////////////////////////////////
+
+
 
     // 状態を変更するためのメソッド
+    /////////////////////////////////////////
     public void SwitchState(IState newState)
     {
-
         if (newState == null)
         {
             Debug.LogError("新しい状態がnullです。");
@@ -49,11 +67,9 @@ public class Statemachine : MonoBehaviour
         if(CoreManager.IsDebugMode)
         {
             Debug.Log($"Changing state from {_currentState} to {newState}");
-            // ステートが変こされたので登録されてるイベントをファイアー（なければ登録してファイアー）
             SignalPool.Instance.GetSignalBucket(EventContants.STATE_CHANGED)?.Pop(EventContants.STATE_CHANGED);
         }
         ////////////////////////////////////////////////////
-
 
         // 現在実行中のコルーチンを停止
         if (_task != null)
@@ -64,26 +80,38 @@ public class Statemachine : MonoBehaviour
 
         // 新しい状態に変更
         _currentState = newState;
+
         // 新しい状態のコルーチンを開始
         _task = StartCoroutine(ExecuteCurrentState());
     }
+    /////////////////////////////////////////
+
+
 
     // 現在の状態の実行を管理するコルーチン
+    /////////////////////////////////////////
     private IEnumerator ExecuteCurrentState()
     {
         if (_currentState != null)
         {
-            yield return _currentState.Run(); // 現在の状態のRunメソッドを実行
+            // 現在の状態のRunメソッドを実行し、その完了を待つ
+            yield return _currentState.Run();
 
+            // 状態遷移のチェック
             while (true)
             {
-                // 現在の状態のPerformFrameメソッドを実行
-                yield return _currentState.PerformFrame();
+                yield return _currentState.PerformFrame(); // 現在の状態のPerformFrameメソッドを実行
 
                 // 状態遷移のチェック
                 if (_currentState.ShouldTransition(out IState nextState))
                 {
-                    _nexrState = nextState;
+                    _nextState = nextState; // 修正：変数名を修正
+
+
+                    _nextState.SetContext(_currentState.GetContext()); // コンテキストを渡す
+
+
+
                     SwitchState(nextState); // 次の状態に遷移
                     yield break; // コルーチンを終了
                 }
@@ -93,15 +121,17 @@ public class Statemachine : MonoBehaviour
         {
             Debug.LogError("現在の状態がnullです。");
         }
-    }
 
+    }
+    /////////////////////////////////////////
+
+
+    
     // Debug Methods
     ///////////////////////////
     public string GetCurrentStateName()
     {
-        return _nexrState?.GetType().Name ?? "None"; // 現在のステート名を返す
+        return _nextState?.GetType().Name ?? "None"; // 修正：変数名を修正
     }
     ///////////////////////////
-
-
 }

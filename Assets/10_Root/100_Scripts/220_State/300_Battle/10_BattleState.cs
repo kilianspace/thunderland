@@ -5,6 +5,14 @@ public class BattleState : IState
 {
     private StateContext _context;
 
+
+
+    public StateContext GetContext() // 実装
+    {
+        return _context;
+    }
+
+    
     public void SetContext(StateContext context)
     {
         _context = context;

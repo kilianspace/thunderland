@@ -1,65 +1,58 @@
-using System;
+using System; // Action に必要
+using UnityEngine; // Mathf および GameObject に必要
 
-public class SelectOption
+public class SelectableOption
 {
-    private object[,] items; // 任意のアイテムを格納できるobject型の2次元配列
-    private int currentRow;  // 現在選択されている行
-    private int currentCol;  // 現在選択されている列
+    private SelectableItem[] items; // 1D 配列でアイテムを保持
+    private int currentIndex;
+    public int CurrentIndex => currentIndex; // 現在のインデックスを取得
 
-    public SelectOption(int rows, int cols)
-    {
-        items = new object[rows, cols]; // rows x cols のサイズで配列を初期化
-        currentRow = 0;
-        currentCol = 0;
+
+    public string GetCurrentItemName(){
+        return items[currentIndex].Name;
     }
 
-    // アイテムを設定するメソッド
-    public void SetItem(int row, int col, object item)
+
+
+
+    public event Action<object> OnItemSelected; // アイテム選択時のコールバック
+
+    public SelectableOption(SelectableItem[] selectableItems)
     {
-        if (row >= 0 && row < items.GetLength(0) && col >= 0 && col < items.GetLength(1))
+        items = selectableItems;
+        currentIndex = 0;
+    }
+
+    public void Move(int direction)
+    {
+        // 新しい位置を計算
+        currentIndex = Mathf.Clamp(currentIndex + direction, 0, items.Length - 1);
+    }
+
+    public void SelectItem()
+    {
+        if (items[currentIndex] != null)
         {
-            items[row, col] = item;
+            OnItemSelected?.Invoke(items[currentIndex].Item); // コールバックを発火
         }
-        else
+    }
+
+
+
+    public void SetActive(bool isActive)
+    {
+        // アクティブ・非アクティブを切り替える処理
+        foreach (var item in items)
         {
-            throw new ArgumentOutOfRangeException("Row or Column is out of range.");
+            if (item != null)
+            {
+                // UI要素があればそのアクティブ状態を設定
+                var uiElement = item.Item as GameObject;
+                if (uiElement != null)
+                {
+                    uiElement.SetActive(isActive);
+                }
+            }
         }
-    }
-
-    // カーソルを上に移動する
-    public void MoveUp()
-    {
-        currentRow = (currentRow - 1 + items.GetLength(0)) % items.GetLength(0);
-    }
-
-    // カーソルを下に移動する
-    public void MoveDown()
-    {
-        currentRow = (currentRow + 1) % items.GetLength(0);
-    }
-
-    // カーソルを左に移動する
-    public void MoveLeft()
-    {
-        currentCol = (currentCol - 1 + items.GetLength(1)) % items.GetLength(1);
-    }
-
-    // カーソルを右に移動する
-    public void MoveRight()
-    {
-        currentCol = (currentCol + 1) % items.GetLength(1);
-    }
-
-    // 現在選択されているアイテムを取得する
-    public object GetSelectedItem()
-    {
-        return items[currentRow, currentCol];
-    }
-
-    // 現在の選択位置を表示する（デバッグ用）
-    public void DisplayCurrentSelection()
-    {
-        Console.WriteLine($"Currently selected position: ({currentRow}, {currentCol})");
-        Console.WriteLine($"Selected item: {GetSelectedItem()?.ToString() ?? "null"}");
     }
 }

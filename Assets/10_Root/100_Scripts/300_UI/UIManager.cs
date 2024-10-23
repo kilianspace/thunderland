@@ -33,13 +33,13 @@ public class UIManager : MonoBehaviour, IUIManager
         _collection = new UIManagerCollection(); // 辞書の初期化
 
         // Title Top Menu Manager
-        RegisterUIManager<TitleMenuUIManager>(UIManagerNameKeyConstants.TITLEMENU_TOP);
+        RegisterUIManager<TitleMenuTopUIManager>(UIManagerNameKeyConstants.TITLEMENU_TOP);
 
     }
 
 
     // 任意のIUIManagerを継承したクラスを辞書に登録する汎用メソッド
-    private void RegisterUIManager<T>(string key) where T : MonoBehaviour, IUIManager
+    public void RegisterUIManager<T>(string key) where T : MonoBehaviour, IUIManager
     {
         T uiManager = FindObjectOfType<T>();
         if (uiManager != null && !_collection.UIManagers.ContainsKey(key))
@@ -48,12 +48,13 @@ public class UIManager : MonoBehaviour, IUIManager
         }
     }
 
-
-
     public void UpdateUI()
     {
 
     }
 
+    public void HandleInput()
+    {
 
+    }
 }
