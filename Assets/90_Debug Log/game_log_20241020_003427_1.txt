@@ -1,6 +1,0 @@
-=== Log Start ===
-2024/10/20 00:34:27: [Log] _signalPool: SignalPool (SignalPool)
-2024/10/20 00:34:27: [Log] _uiManager: UI Manager (UIManager)
-2024/10/20 00:34:27: [Log] Changing state from  to SceneSetupSstate
-2024/10/20 00:34:27: [Log] 新しいシーンを読み込み中。。。。
-2024/10/20 00:34:28: [Log] === Log End ===

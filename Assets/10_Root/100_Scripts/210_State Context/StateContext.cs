@@ -27,45 +27,11 @@ public class StateContext
     }
     //////////////////////////////////
 
-    // Required Property
-    //////////////////////////////////
-    [SerializeField] private IGameData _gameData;
-    public IGameData GameData
-    {
-        get { return _gameData; }
-        set { _gameData = value; }
-    }
-    //////////////////////////////////
 
-    // Private Cnstructor
-    //////////////////////////////////
-    private StateContext(
-        Statemachine statemachine,
-        SignalPool signalPool,
-        IGameData  gameData = null)
-    {
-
-        _statemachine = statemachine;
-        _signalPool = signalPool;
-        _gameData = gameData;
-    }
-    //////////////////////////////////
-
-    // Static Factory Method
-    //////////////////////////////////
-    public static StateContext Create(
-        Statemachine statemachine,
-        SignalPool signalPool,
-        IGameData  gameData = null
-    )
-    {
-        return new StateContext(statemachine, signalPool, gameData);
-    }
-    //////////////////////////////////
 
     // [OPTION] UI Manager
     //////////////////////////////////
-    public IUIManager _uiManager;
+    [SerializeField] private IUIManager _uiManager;
     public IUIManager UIManager
     {
         get { return _uiManager; }
@@ -75,6 +41,55 @@ public class StateContext
     {
         _uiManager = uiManager;
         return this;
+    }
+    //////////////////////////////////
+
+
+
+    // Required Property
+    //////////////////////////////////
+    [SerializeField] private IGameData _gameData;
+    public IGameData GameData
+    {
+        get { return _gameData; }
+        set { _gameData = value; }
+    }
+    public StateContext WithOptionalGameData(IGameData gameData)
+    {
+        _gameData = gameData;
+        return this;
+    }
+    //////////////////////////////////
+
+
+
+
+
+    // Static Factory Method
+    //////////////////////////////////
+    public static StateContext Create(
+        Statemachine statemachine,
+        SignalPool signalPool
+    )
+    {
+        return new StateContext(statemachine, signalPool);
+    }
+    //////////////////////////////////
+
+
+
+    // Private Cnstructor
+    //////////////////////////////////
+    private StateContext(
+        Statemachine statemachine,
+        SignalPool signalPool,
+        UIManager uiManager = null,
+        IGameData  gameData = null
+    ){
+
+        _statemachine = statemachine;
+        _signalPool = signalPool;
+
     }
     //////////////////////////////////
 

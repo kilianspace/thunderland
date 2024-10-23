@@ -14,7 +14,7 @@ public class DebugCornerStatsUIManager : MonoBehaviour, IUIManager
 
 
     // ステートを更新するメソッド
-    public void UpdateUI(string test)
+    public void UpdateUI()
     {
     }
 
