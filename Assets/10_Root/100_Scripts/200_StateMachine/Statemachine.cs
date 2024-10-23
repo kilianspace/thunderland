@@ -8,16 +8,11 @@ public class Statemachine : MonoBehaviour
     private IState _currentState; // 現在の状態を保持する変数
     public IState CurrentState => _currentState; // 現在の状態を取得するプロパティ
 
-    private IState _nexrState; 
+    private IState _nexrState;
     public IState NextState => _nexrState; // デバッグ表示に使用
 
 
     private Coroutine _task; // 実行中のコルーチンを保持する変数
-
-
-    // ステート変更時のイベント名
-    private const string StateChangedEvent = "StateChanged";
-
 
 
     // 状態インスタンスを保持するための辞書
@@ -55,7 +50,7 @@ public class Statemachine : MonoBehaviour
         {
             Debug.Log($"Changing state from {_currentState} to {newState}");
             // ステートが変こされたので登録されてるイベントをファイアー（なければ登録してファイアー）
-            SignalPool.Instance.GetSignalBucket(StateChangedEvent)?.Pop(StateChangedEvent);
+            SignalPool.Instance.GetSignalBucket(EventContants.STATE_CHANGED)?.Pop(EventContants.STATE_CHANGED);
         }
         ////////////////////////////////////////////////////
 

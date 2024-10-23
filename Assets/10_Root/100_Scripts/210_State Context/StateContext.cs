@@ -17,7 +17,9 @@ public class StateContext
     }
     //////////////////////////////////
 
-    // SignalPool
+
+
+    // SignalPool SINGLETON
     //////////////////////////////////
     [SerializeField] private SignalPool _signalPool;
     public SignalPool SignalPool
@@ -27,54 +29,69 @@ public class StateContext
     }
     //////////////////////////////////
 
-    // Required Property
+
+
+    // UI Manager SINGLETON
     //////////////////////////////////
-    [SerializeField] private IGameData _gameData;
-    public IGameData GameData
+    [SerializeField] private UIManager _uiManager;
+    public UIManager UIManager
     {
-        get { return _gameData; }
-        set { _gameData = value; }
+        get { return _uiManager; }
+        set { _uiManager = value; }
+    }
+    public StateContext WithOptionalUIManager(UIManager uiManager)
+    {
+        _uiManager = uiManager;
+        return this;
     }
     //////////////////////////////////
+
+
+
+    // Game Data Manager SINGLETON
+    //////////////////////////////////
+    [SerializeField] private GameDataManager _gameDataManager;
+    public GameDataManager GameDataManager
+    {
+        get { return _gameDataManager; }
+        set { _gameDataManager = value; }
+    }
+    public StateContext WithOptionaGameDataManager(GameDataManager gameDataManager)
+    {
+        _gameDataManager = gameDataManager;
+        return this;
+    }
+    //////////////////////////////////
+
+
+
+
+
+    // Static Factory Method
+    //////////////////////////////////
+    public static StateContext Create(
+        Statemachine statemachine,
+        SignalPool signalPool
+    )
+    {
+        return new StateContext(statemachine, signalPool);
+    }
+    //////////////////////////////////
+
+
 
     // Private Cnstructor
     //////////////////////////////////
     private StateContext(
         Statemachine statemachine,
         SignalPool signalPool,
-        IGameData  gameData = null)
-    {
+        UIManager uiManager = null,
+        IGameData  gameData = null
+    ){
 
         _statemachine = statemachine;
         _signalPool = signalPool;
-        _gameData = gameData;
-    }
-    //////////////////////////////////
 
-    // Static Factory Method
-    //////////////////////////////////
-    public static StateContext Create(
-        Statemachine statemachine,
-        SignalPool signalPool,
-        IGameData  gameData = null
-    )
-    {
-        return new StateContext(statemachine, signalPool, gameData);
-    }
-    //////////////////////////////////
-
-    // [OPTION] UI Manager
-    //////////////////////////////////
-    public IUIManager _uiManager;
-    public IUIManager UIManager
-    {
-        get { return _uiManager; }
-        set { _uiManager = value; }
-    }
-    public StateContext WithOptionalUIManager(IUIManager uiManager)
-    {
-        _uiManager = uiManager;
-        return this;
     }
     //////////////////////////////////
 
