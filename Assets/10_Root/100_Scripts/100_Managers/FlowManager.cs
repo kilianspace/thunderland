@@ -23,16 +23,20 @@ public class FlowManager : MonoBehaviour
         // InitializeFlowManagerコルーチンを開始
         StartCoroutine(InitializeFlowManager());
 
-        // Get the CharacterBook component from the scene
-        CharacterLoader characterLoader = FindObjectOfType<CharacterLoader>();
-        if (characterLoader == null)
-        {
-            Debug.LogError("CharacterLoader component not found in the scene.");
-            return; // Exit if not found
-        }
 
-        // Load characters at the start
-        characterLoader.LoadCharacters();
+            CSVToScriptableObject _cSVToScriptableObject = FindObjectOfType<CSVToScriptableObject>();
+            _cSVToScriptableObject.GenerateScriptableObjects();
+
+        // // Get the CharacterBook component from the scene
+        // CharacterLoader characterLoader = FindObjectOfType<CharacterLoader>();
+        // if (characterLoader == null)
+        // {
+        //     Debug.LogError("CharacterLoader component not found in the scene.");
+        //     return; // Exit if not found
+        // }
+        //
+        // // Load characters at the start
+        // characterLoader.LoadCharacters();
     }
 
     private IEnumerator InitializeFlowManager()

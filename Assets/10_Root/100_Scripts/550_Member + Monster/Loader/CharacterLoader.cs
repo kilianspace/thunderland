@@ -70,7 +70,7 @@ public class CharacterLoader : MonoBehaviour
                             Attribute = values[9] // 属性を設定
                         };
 
-                        characterList.Add(monster);
+                        characterList.Add(monster.CharacterBase);
                         Debug.Log($"Added monster: {monster.Name} (ID: {monster.ID}) with Attribute: {monster.Attribute}");
                     }
                     else if (values[2].Equals("Member", StringComparison.OrdinalIgnoreCase))
@@ -150,16 +150,17 @@ public class CharacterLoader : MonoBehaviour
     {
         foreach (var character in Characters.Values) // 辞書に保存されたキャラクターをループ
         {
-            // キャラクターがモンスターの場合
-            if (character is Monster monster)
-            {
-                Debug.Log($"Monster ID: {monster.ID}, Name: {monster.Name}, Type: {monster.Type}, " +
-                          $"HP: {monster.HP}, Attack: {monster.Attack}, Defense: {monster.Defense}, " +
-                          $"Special Skills: {string.Join(", ", monster.SpecialSkills)}, " +
-                          $"Drop Items: {string.Join(", ", monster.DropItems)}, Drop Rate: {monster.DropRate}");
-            }
-            // キャラクターがメンバーの場合
-            else if (character is Member member)
+            // // キャラクターがモンスターの場合
+            // if (character is Monster monster)
+            // {
+            //     Debug.Log($"Monster ID: {monster.ID}, Name: {monster.Name}, Type: {monster.Type}, " +
+            //               $"HP: {monster.HP}, Attack: {monster.Attack}, Defense: {monster.Defense}, " +
+            //               $"Special Skills: {string.Join(", ", monster.SpecialSkills)}, " +
+            //               $"Drop Items: {string.Join(", ", monster.DropItems)}, Drop Rate: {monster.DropRate}");
+            // }
+            // // キャラクターがメンバーの場合
+            // else \
+            if (character is Member member)
             {
                 Debug.Log($"Member ID: {member.ID}, Name: {member.Name}, HP: {member.HP}, " +
                           $"Attack: {member.Attack}, Defense: {member.Defense}, " +
